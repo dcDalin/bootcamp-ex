@@ -1,46 +1,56 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-// useEffect hook
-// fetch api
+const Body = () => {
+  const [abilities, setAbilities] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-const Body = (props) => {
-  const [count, setCount] = useState(10);
+  const [run, setRun] = useState(false);
 
-  const [user, setUser] = useState([
-    {
-      name: "Lee",
-      age: 23,
-      town: "Manila",
-    },
-    {
-      name: "Aubrey",
-      age: 10,
-      town: "Manila",
-    },
-  ]);
+  setTimeout(() => {
+    setRun(true);
+  }, 5000);
 
-  const data = user.map((user) => {
-    return (
-      <div>
-        <p>{user.name}</p>
-        <p>{user.age}</p>
-        <p>{user.town}</p>
-      </div>
-    );
+  useEffect(() => {
+    setLoading(true);
+    const fetchPokemon = async () => {
+      try {
+        const res = await axios.get("https://pokeapi.co/api/v2/pokemon/ditto");
+        setAbilities(res.data.abilities);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      }
+    };
+
+    fetchPokemon();
+  }, []);
+
+  // const fetchPokemon = () => {
+  //   axios
+  //     .get("https://pokeapi.co/api/v2/pokemon/ditto")
+  //     .then((res) => {
+  //       setAbilities(res.data.abilities);
+  //     })
+  //     .then(() => {})
+  //     .then(() => {})
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+
+  const abilitiesData = abilities.map((anything, index) => {
+    return <p key={anything.ability.id}>{anything.ability.name}</p>;
   });
 
-  const handleClick = () => {
-    setCount(count - 1);
-  };
+  // if(loading === true) {
+  //   // show loading p tag
+  // } else {
+  //   // show pokemon data
+  // }
 
-  return (
-    <div>
-      <h1>Body {props.country}</h1>
-      <h1>Count is {count}</h1>
-      <button onClick={handleClick}>+</button>
-      {data}
-    </div>
-  );
+  return <div>{loading ? <p>Loading... </p> : <div>{abilitiesData}</div>}</div>;
 };
 
 export default Body;

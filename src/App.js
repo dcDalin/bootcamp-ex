@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Header from "./components/Header";
 import Body from "./components/Body";
 import Footer from "./components/Footer";
@@ -6,16 +5,10 @@ import Footer from "./components/Footer";
 function App() {
   const country = "Philippines";
 
-  const [greeting, setGreeting] = useState("Good morning");
-
-  setTimeout(() => {
-    setGreeting("Good afternoon");
-  }, 3000);
-
   return (
     <div>
-      <Header greeting={greeting} age="25" country={country} />
-      <Body country={country} />
+      <Header />
+      <Body />
       <Footer country={country} town="Manila" />
     </div>
   );
