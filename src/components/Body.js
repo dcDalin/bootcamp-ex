@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import styled from "styled-components";
+import CustomButton from "./Button";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+
+import "./body.css";
+
+const Title = styled.h1`
+  font-size: 1.5em;
+  text-align: center;
+  color: palevioletred;
+`;
 
 const Body = () => {
   const [abilities, setAbilities] = useState([]);
@@ -50,7 +62,41 @@ const Body = () => {
   //   // show pokemon data
   // }
 
-  return <div>{loading ? <p>Loading... </p> : <div>{abilitiesData}</div>}</div>;
+  return (
+    <>
+      <div className="footer body" style={{ fontSize: "10px" }}>
+        {loading ? <p>Loading... </p> : <div>{abilitiesData}</div>}
+        <p
+          style={{
+            color: "green",
+            backgroundColor: "#000000",
+            fontSize: "20px",
+            padding: "2em",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+          }}
+        >
+          I am having so much fun today
+        </p>
+      </div>
+      <Title>Styled component</Title>
+      <CustomButton name="Log in" />
+      <CustomButton name="Sign In" />
+      <Button>Button from react</Button>
+      <Card style={{ width: "18rem" }}>
+        <Card.Img variant="top" src="holder.js/100px180" />
+        <Card.Body>
+          <Card.Title>Card Title</Card.Title>
+          <Card.Text>
+            Some quick example text to build on the card title and make up the
+            bulk of the card's content.
+          </Card.Text>
+          <Button variant="primary">Go somewhere</Button>
+        </Card.Body>
+      </Card>
+    </>
+  );
 };
 
 export default Body;
