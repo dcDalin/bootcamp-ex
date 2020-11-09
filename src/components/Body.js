@@ -1,101 +1,59 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import styled from "styled-components";
-import CustomButton from "./Button";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-
-import "./body.css";
-
-const Title = styled.h1`
-  font-size: 1.5em;
-  text-align: center;
-  color: palevioletred;
-`;
+import React from "react";
+import { Form, Button } from "react-bootstrap";
+import { useForm } from "react-hook-form";
 
 const Body = () => {
-  const [abilities, setAbilities] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const { register, handleSubmit, watch, errors } = useForm();
 
-  const [run, setRun] = useState(false);
-
-  setTimeout(() => {
-    setRun(true);
-  }, 5000);
-
-  useEffect(() => {
-    setLoading(true);
-    const fetchPokemon = async () => {
-      try {
-        const res = await axios.get("https://pokeapi.co/api/v2/pokemon/ditto");
-        setAbilities(res.data.abilities);
-        setLoading(false);
-      } catch (err) {
-        console.log(err);
-        setLoading(false);
-      }
-    };
-
-    fetchPokemon();
-  }, []);
-
-  // const fetchPokemon = () => {
-  //   axios
-  //     .get("https://pokeapi.co/api/v2/pokemon/ditto")
-  //     .then((res) => {
-  //       setAbilities(res.data.abilities);
-  //     })
-  //     .then(() => {})
-  //     .then(() => {})
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  const abilitiesData = abilities.map((anything, index) => {
-    return <p key={anything.ability.id}>{anything.ability.name}</p>;
-  });
-
-  // if(loading === true) {
-  //   // show loading p tag
-  // } else {
-  //   // show pokemon data
-  // }
+  const anything = (data) => console.log(data);
 
   return (
-    <>
-      <div className="footer body" style={{ fontSize: "10px" }}>
-        {loading ? <p>Loading... </p> : <div>{abilitiesData}</div>}
-        <p
-          style={{
-            color: "green",
-            backgroundColor: "#000000",
-            fontSize: "20px",
-            padding: "2em",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "flex-start",
-          }}
-        >
-          I am having so much fun today
-        </p>
-      </div>
-      <Title>Styled component</Title>
-      <CustomButton name="Log in" />
-      <CustomButton name="Sign In" />
-      <Button>Button from react</Button>
-      <Card style={{ width: "18rem" }}>
-        <Card.Img variant="top" src="holder.js/100px180" />
-        <Card.Body>
-          <Card.Title>Card Title</Card.Title>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
-          <Button variant="primary">Go somewhere</Button>
-        </Card.Body>
-      </Card>
-    </>
+    <Form onSubmit={handleSubmit(anything)}>
+      <Form.Group controlId="firstName">
+        <Form.Label>First Name</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter your first name"
+          name="firstName"
+          ref={register({ required: true, min: 2 })}
+        />
+      </Form.Group>
+      {errors.firstName && "First name is required"}
+
+      <Form.Group controlId="lastName">
+        <Form.Label>Last Name</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter your last name"
+          name="lastName"
+          ref={register({ required: true })}
+        />
+      </Form.Group>
+      {errors.lastName && "Last name is required"}
+
+      <Form.Group controlId="email">
+        <Form.Label>Email</Form.Label>
+        <Form.Control
+          type="email"
+          placeholder="Enter your email address"
+          name="email"
+          ref={register({ required: true })}
+        />
+      </Form.Group>
+
+      <Form.Group controlId="country">
+        <Form.Label>Country</Form.Label>
+        <select name="country" ref={register}>
+          <option value="USA">USA</option>
+          <option value="China">China</option>
+          <option value="Kenay">Kenay</option>
+        </select>
+      </Form.Group>
+
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+    </Form>
   );
 };
 
